@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LEGION | 201 East 84th Street</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A96E;
+  --gold-light: #D4BC8B;
+  --cream: #F5F0E8;
+  --charcoal: #1A1A1A;
+  --dark: #0D0D0D;
+  --medium: #2A2A2A;
+  --light-text: #B8B8B8;
+  --transition: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--dark);
+  color: #fff;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 24px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.5s var(--transition);
+  background: transparent;
+}
+
+nav.scrolled {
+  background: rgba(13,13,13,0.95);
+  backdrop-filter: blur(20px);
+  padding: 16px 48px;
+  border-bottom: 1px solid rgba(201,169,110,0.15);
+}
+
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.nav-logo span {
+  color: var(--gold);
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--light-text);
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 300;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  transition: width 0.4s var(--transition);
+}
+
+.nav-links a:hover { color: var(--gold); }
+.nav-links a:hover::after { width: 100%; }
+
+.nav-cta {
+  padding: 10px 28px;
+  border: 1px solid var(--gold);
+  color: var(--gold) !important;
+  font-size: 10px !important;
+  letter-spacing: 3px;
+  transition: all 0.3s !important;
+  cursor: pointer;
+}
+
+.nav-cta:hover {
+  background: var(--gold);
+  color: var(--dark) !important;
+}
+
+/* ═══════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════ */
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: opacity 1.5s var(--transition);
+  filter: brightness(0.5);
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(13,13,13,0.3) 0%,
+    rgba(13,13,13,0.1) 40%,
+    rgba(13,13,13,0.6) 100%
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  max-width: 900px;
+  padding: 0 40px;
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 32px;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeUp 1s 0.3s forwards;
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -1px;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 1s 0.5s forwards;
+}
+
+.hero-subtitle {
+  font-size: 15px;
+  font-weight: 200;
+  letter-spacing: 2px;
+  color: var(--light-text);
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 1s 0.7s forwards;
+}
+
+.hero-btn {
+  display: inline-block;
+  padding: 16px 48px;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 400;
+  transition: all 0.4s var(--transition);
+  opacity: 0;
+  animation: fadeUp 1s 0.9s forwards;
+  cursor: pointer;
+}
+
+.hero-btn:hover {
+  background: var(--gold);
+  color: var(--dark);
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: fadeUp 1s 1.2s forwards;
+}
+
+.hero-scroll span {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--light-text);
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollPulse 2s infinite;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* ═══════════════════════════════════════
+   SECTION COMMON
+   ═══════════════════════════════════════ */
+section {
+  padding: 120px 48px;
+}
+
+.section-eyebrow {
+  font-size: 10px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 300;
+  line-height: 1.15;
+  margin-bottom: 24px;
+}
+
+.section-desc {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--light-text);
+  font-weight: 200;
+  max-width: 600px;
+}
+
+.gold-divider {
+  width: 60px;
+  height: 1px;
+  background: var(--gold);
+  margin: 40px 0;
+}
+
+/* ═══════════════════════════════════════
+   GALLERY SECTION
+   ═══════════════════════════════════════ */
+#gallery {
+  background: var(--dark);
+}
+
+.gallery-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.gallery-header .gold-divider {
+  margin: 40px auto;
+}
+
+.gallery-header .section-desc {
+  margin: 0 auto;
+}
+
+/* Category Filter Tabs */
+.gallery-filters {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 10px 24px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--light-text);
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s var(--transition);
+}
+
+.filter-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.filter-btn.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--dark);
+}
+
+/* Photo Counter */
+.gallery-counter {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--light-text);
+  font-weight: 300;
+}
+
+.gallery-counter span { color: var(--gold); }
+
+/* Thumbnail Grid */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 4px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.gallery-thumb {
+  position: relative;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--medium);
+}
+
+.gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--transition), filter 0.5s;
+}
+
+.gallery-thumb:hover img {
+  transform: scale(1.06);
+  filter: brightness(1.1);
+}
+
+.gallery-thumb .thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+}
+
+.gallery-thumb:hover .thumb-overlay { opacity: 1; }
+
+.thumb-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+  font-weight: 300;
+}
+
+/* Load More */
+.load-more-wrap {
+  text-align: center;
+  margin-top: 48px;
+}
+
+.load-more-btn {
+  padding: 14px 48px;
+  background: transparent;
+  border: 1px solid rgba(201,169,110,0.4);
+  color: var(--gold);
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.load-more-btn:hover {
+  background: var(--gold);
+  color: var(--dark);
+}
+
+/* ═══════════════════════════════════════
+   LIGHTBOX
+   ═══════════════════════════════════════ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0,0,0,0.97);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.lightbox.active {
+  display: flex;
+  opacity: 1;
+}
+
+.lightbox-img-wrap {
+  position: relative;
+  max-width: 92vw;
+  max-height: 88vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-img-wrap img {
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  transition: opacity 0.3s;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+  font-weight: 200;
+}
+
+.lightbox-close:hover { opacity: 1; }
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.3s;
+  z-index: 10;
+}
+
+.lightbox-nav:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.lightbox-prev { left: 24px; }
+.lightbox-next { right: 24px; }
+
+.lightbox-info {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 10;
+}
+
+.lightbox-caption {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--light-text);
+  margin-bottom: 8px;
+  font-weight: 300;
+}
+
+.lightbox-count {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  font-weight: 400;
+}
+
+/* ═══════════════════════════════════════
+   BUILDING INFO
+   ═══════════════════════════════════════ */
+#building {
+  background: var(--charcoal);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.building-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 48px;
+}
+
+.stat-item {
+  border-top: 1px solid rgba(201,169,110,0.3);
+  padding-top: 20px;
+}
+
+.stat-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--light-text);
+  margin-top: 8px;
+  font-weight: 300;
+}
+
+.building-image {
+  position: relative;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+}
+
+.building-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.building-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(201,169,110,0.2);
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════
+   CONTACT / INQUIRY
+   ═══════════════════════════════════════ */
+#contact {
+  background: var(--dark);
+  text-align: center;
+  padding: 120px 48px;
+}
+
+#contact .section-desc {
+  margin: 0 auto 48px;
+}
+
+.contact-btn {
+  display: inline-block;
+  padding: 18px 56px;
+  background: var(--gold);
+  color: var(--dark);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.4s;
+  border: none;
+  cursor: pointer;
+}
+
+.contact-btn:hover {
+  background: var(--gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(201,169,110,0.25);
+}
+
+/* ═══════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════ */
+footer {
+  padding: 48px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 1px;
+}
+
+footer a {
+  color: var(--gold);
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+footer a:hover { opacity: 1; }
+
+/* ═══════════════════════════════════════
+   CMS PANEL
+   ═══════════════════════════════════════ */
+.cms-trigger {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 3000;
+  width: 48px;
+  height: 48px;
+  background: var(--medium);
+  border: 1px solid rgba(201,169,110,0.3);
+  color: var(--gold);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  opacity: 0.5;
+}
+
+.cms-trigger:hover {
+  opacity: 1;
+  background: var(--gold);
+  color: var(--dark);
+}
+
+.cms-panel {
+  position: fixed;
+  top: 0;
+  right: -520px;
+  width: 520px;
+  height: 100vh;
+  background: #111;
+  z-index: 3001;
+  transition: right 0.5s var(--transition);
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid rgba(201,169,110,0.2);
+  overflow: hidden;
+}
+
+.cms-panel.open { right: 0; }
+
+.cms-header {
+  padding: 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.cms-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 2px;
+}
+
+.cms-close {
+  background: none;
+  border: none;
+  color: var(--light-text);
+  font-size: 22px;
+  cursor: pointer;
+  font-weight: 200;
+}
+
+.cms-tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+
+.cms-tab {
+  flex: 1;
+  padding: 14px;
+  background: transparent;
+  border: none;
+  color: var(--light-text);
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-bottom: 2px solid transparent;
+}
+
+.cms-tab.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+.cms-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.cms-body::-webkit-scrollbar { width: 4px; }
+.cms-body::-webkit-scrollbar-thumb { background: rgba(201,169,110,0.3); border-radius: 2px; }
+
+/* CMS - Photo Management */
+.cms-category {
+  margin-bottom: 32px;
+}
+
+.cms-category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.cms-category-name {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 400;
+}
+
+.cms-category-count {
+  font-size: 10px;
+  color: var(--light-text);
+}
+
+.cms-photo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cms-photo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: all 0.2s;
+  cursor: grab;
+}
+
+.cms-photo-item:hover {
+  background: rgba(201,169,110,0.05);
+  border-color: rgba(201,169,110,0.15);
+}
+
+.cms-photo-item.hidden-photo {
+  opacity: 0.35;
+}
+
+.cms-photo-thumb {
+  width: 56px;
+  height: 36px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.cms-photo-name {
+  flex: 1;
+  font-size: 10px;
+  color: var(--light-text);
+  letter-spacing: 0.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cms-photo-toggle {
+  width: 36px;
+  height: 20px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.3s;
+  flex-shrink: 0;
+}
+
+.cms-photo-toggle.on { background: var(--gold); }
+
+.cms-photo-toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.cms-photo-toggle.on::after {
+  transform: translateX(16px);
+}
+
+/* CMS - Settings */
+.cms-field {
+  margin-bottom: 24px;
+}
+
+.cms-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.cms-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.cms-input:focus {
+  border-color: var(--gold);
+}
+
+.cms-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.cms-save {
+  width: 100%;
+  padding: 14px;
+  background: var(--gold);
+  color: var(--dark);
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s;
+  margin-top: 16px;
+}
+
+.cms-save:hover {
+  background: var(--gold-light);
+}
+
+.cms-toast {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  padding: 12px 24px;
+  background: var(--gold);
+  color: var(--dark);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  z-index: 4000;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+
+.cms-toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* CMS overlay */
+.cms-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 3000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+.cms-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════ */
+@media (max-width: 1024px) {
+  #building { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+}
+
+@media (max-width: 768px) {
+  nav { padding: 16px 24px; }
+  .nav-links { display: none; }
+  section { padding: 80px 24px; }
+  .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 2px; }
+  .cms-panel { width: 100%; right: -100%; }
+  .lightbox-nav { width: 40px; height: 40px; }
+  .lightbox-prev { left: 8px; }
+  .lightbox-next { right: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ NAVIGATION ═══════ -->
+<nav id="navbar">
+  <div class="nav-logo">L<span>E</span>GION</div>
+  <ul class="nav-links">
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#building">Residences</a></li>
+    <li><a href="#contact">Inquire</a></li>
+    <li><a href="#" class="nav-cta" id="cms-open-nav">CMS</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero" id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow" id="heroEyebrow">Upper East Side · New York</p>
+    <h1 class="hero-title" id="heroTitle">201 East 84th</h1>
+    <p class="hero-subtitle" id="heroSubtitle">A new standard of elevated living on the Upper East Side</p>
+    <a href="#gallery" class="hero-btn">Explore Views</a>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════ GALLERY ═══════ -->
+<section id="gallery">
+  <div class="gallery-header">
+    <p class="section-eyebrow">View Study</p>
+    <h2 class="section-title" id="galleryTitle">Unparalleled Perspectives</h2>
+    <div class="gold-divider"></div>
+    <p class="section-desc" id="galleryDesc">Panoramic drone photography capturing every vantage point from 75 to 600 feet across all orientations.</p>
+  </div>
+
+  <div class="gallery-filters" id="galleryFilters"></div>
+  <div class="gallery-counter" id="galleryCounter"></div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+
+  <div class="load-more-wrap" id="loadMoreWrap">
+    <button class="load-more-btn" id="loadMoreBtn">Load More</button>
+  </div>
+</section>
+
+<!-- ═══════ BUILDING INFO ═══════ -->
+<section id="building">
+  <div>
+    <p class="section-eyebrow">The Residence</p>
+    <h2 class="section-title">Crafted for<br>Distinction</h2>
+    <div class="gold-divider"></div>
+    <p class="section-desc">Designed by Hill West Architects with Robert A.M. Stern Architects. 201 East 84th Street rises as a beacon of refined living on the Upper East Side, offering expansive residences with extraordinary views of the Manhattan skyline.</p>
+    <div class="building-stats">
+      <div class="stat-item">
+        <div class="stat-number">32</div>
+        <div class="stat-label">Stories</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">5,569</div>
+        <div class="stat-label">SF Penthouse</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">600'</div>
+        <div class="stat-label">Crown Height</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">1–5</div>
+        <div class="stat-label">Bedrooms</div>
+      </div>
+    </div>
+  </div>
+  <div class="building-image">
+    <img id="buildingImg" src="" alt="201 East 84th Street">
+  </div>
+</section>
+
+<!-- ═══════ CONTACT ═══════ -->
+<section id="contact">
+  <p class="section-eyebrow">Private Inquiries</p>
+  <h2 class="section-title">Schedule a<br>Private Viewing</h2>
+  <div class="gold-divider" style="margin: 40px auto;"></div>
+  <p class="section-desc">For exclusive access to floor plans, pricing, and private appointments, reach out to our sales gallery.</p>
+  <a href="mailto:info@201east84.com" class="contact-btn" id="contactBtn">Request Information</a>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer>
+  <span>SMA Equities &middot; Hill West Architects</span>
+  <span>&copy; 2026 Legion 201 East 84th. All rights reserved.</span>
+  <a href="#" id="cms-open-footer">Manage Site</a>
+</footer>
+
+<!-- ═══════ LIGHTBOX ═══════ -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lbClose">&times;</button>
+  <button class="lightbox-nav lightbox-prev" id="lbPrev">&#8249;</button>
+  <div class="lightbox-img-wrap">
+    <img id="lbImg" src="" alt="">
+  </div>
+  <button class="lightbox-nav lightbox-next" id="lbNext">&#8250;</button>
+  <div class="lightbox-info">
+    <div class="lightbox-caption" id="lbCaption"></div>
+    <div class="lightbox-count" id="lbCount"></div>
+  </div>
+</div>
+
+<!-- ═══════ CMS PANEL ═══════ -->
+<div class="cms-overlay" id="cmsOverlay"></div>
+<button class="cms-trigger" id="cmsTrigger" title="Content Management">&#9881;</button>
+
+<div class="cms-panel" id="cmsPanel">
+  <div class="cms-header">
+    <h2>Content Manager</h2>
+    <button class="cms-close" id="cmsClose">&times;</button>
+  </div>
+  <div class="cms-tabs">
+    <button class="cms-tab active" data-tab="photos">Photos</button>
+    <button class="cms-tab" data-tab="content">Content</button>
+    <button class="cms-tab" data-tab="settings">Settings</button>
+  </div>
+  <div class="cms-body" id="cmsBody"></div>
+</div>
+
+<div class="cms-toast" id="cmsToast">Saved</div>
+
+<!-- ═══════════════════════════════════════
+     APPLICATION JS
+     ═══════════════════════════════════════ -->
+<script>
+// ──────────────────────────────────────
+// PHOTO MANIFEST (all 484 photos)
+// ──────────────────────────────────────
+const CATEGORIES = {
+  crown: {
+    label: "Crown (FL 31+)",
+    description: "400–600 ft elevation",
+    path: "images/crown",
+    files: ["201E84_Crown_01of08_SW_400ft.JPG","201E84_Crown_01of08_SW_425ft.JPG","201E84_Crown_01of08_SW_450ft.JPG","201E84_Crown_01of08_SW_475ft.JPG","201E84_Crown_01of08_SW_500ft.JPG","201E84_Crown_01of08_SW_525ft.JPG","201E84_Crown_01of08_SW_550ft.JPG","201E84_Crown_01of08_SW_575ft.JPG","201E84_Crown_01of08_SW_600ft.JPG","201E84_Crown_02of08_S_400ft.JPG","201E84_Crown_02of08_S_425ft.JPG","201E84_Crown_02of08_S_450ft.JPG","201E84_Crown_02of08_S_475ft.JPG","201E84_Crown_02of08_S_500ft.JPG","201E84_Crown_02of08_S_525ft.JPG","201E84_Crown_02of08_S_550ft.JPG","201E84_Crown_02of08_S_575ft.JPG","201E84_Crown_02of08_S_600ft.JPG","201E84_Crown_03of08_SE_400ft.JPG","201E84_Crown_03of08_SE_425ft.JPG","201E84_Crown_03of08_SE_450ft.JPG","201E84_Crown_03of08_SE_475ft.JPG","201E84_Crown_03of08_SE_500ft.JPG","201E84_Crown_03of08_SE_525ft.JPG","201E84_Crown_03of08_SE_550ft.JPG","201E84_Crown_03of08_SE_575ft.JPG","201E84_Crown_03of08_SE_600ft.JPG","201E84_Crown_04of08_E_400ft.JPG","201E84_Crown_04of08_E_425ft.JPG","201E84_Crown_04of08_E_450ft.JPG","201E84_Crown_04of08_E_475ft.JPG","201E84_Crown_04of08_E_500ft.JPG","201E84_Crown_04of08_E_525ft.JPG","201E84_Crown_04of08_E_550ft.JPG","201E84_Crown_04of08_E_575ft.JPG","201E84_Crown_04of08_E_600ft.JPG","201E84_Crown_05of08_NE_400ft.JPG","201E84_Crown_05of08_NE_425ft.JPG","201E84_Crown_05of08_NE_450ft.JPG","201E84_Crown_05of08_NE_475ft.JPG","201E84_Crown_05of08_NE_500ft.JPG","201E84_Crown_05of08_NE_525ft.JPG","201E84_Crown_05of08_NE_550ft.JPG","201E84_Crown_05of08_NE_575ft.JPG","201E84_Crown_05of08_NE_600ft.JPG","201E84_Crown_06of08_N_400ft.JPG","201E84_Crown_06of08_N_425ft.JPG","201E84_Crown_06of08_N_450ft.JPG","201E84_Crown_06of08_N_475ft.JPG","201E84_Crown_06of08_N_500ft.JPG","201E84_Crown_06of08_N_525ft.JPG","201E84_Crown_06of08_N_550ft.JPG","201E84_Crown_06of08_N_575ft.JPG","201E84_Crown_06of08_N_600ft.JPG","201E84_Crown_07of08_NW_400ft.JPG","201E84_Crown_07of08_NW_425ft.JPG","201E84_Crown_07of08_NW_450ft.JPG","201E84_Crown_07of08_NW_475ft.JPG","201E84_Crown_07of08_NW_500ft.JPG","201E84_Crown_07of08_NW_525ft.JPG","201E84_Crown_07of08_NW_550ft.JPG","201E84_Crown_07of08_NW_575ft.JPG","201E84_Crown_07of08_NW_600ft.JPG","201E84_Crown_08of08_W_400ft.JPG","201E84_Crown_08of08_W_425ft.JPG","201E84_Crown_08of08_W_450ft.JPG","201E84_Crown_08of08_W_475ft.JPG","201E84_Crown_08of08_W_500ft.JPG","201E84_Crown_08of08_W_525ft.JPG","201E84_Crown_08of08_W_550ft.JPG","201E84_Crown_08of08_W_575ft.JPG","201E84_Crown_08of08_W_600ft.JPG"]
+  },
+  "floors-13-30": {
+    label: "Floors 13–30",
+    description: "150–375 ft elevation",
+    path: "images/floors-13-30",
+    files: ["201E84_FL13-30_01of10_SW_150ft.JPG","201E84_FL13-30_01of10_SW_175ft.JPG","201E84_FL13-30_01of10_SW_200ft.JPG","201E84_FL13-30_01of10_SW_225ft.JPG","201E84_FL13-30_01of10_SW_250ft.JPG","201E84_FL13-30_01of10_SW_275ft.JPG","201E84_FL13-30_01of10_SW_300ft.JPG","201E84_FL13-30_01of10_SW_325ft.JPG","201E84_FL13-30_01of10_SW_350ft.JPG","201E84_FL13-30_01of10_SW_375ft.JPG","201E84_FL13-30_02of10_SW_150ft.JPG","201E84_FL13-30_02of10_SW_175ft.JPG","201E84_FL13-30_02of10_SW_200ft.JPG","201E84_FL13-30_02of10_SW_225ft.JPG","201E84_FL13-30_02of10_SW_250ft.JPG","201E84_FL13-30_02of10_SW_275ft.JPG","201E84_FL13-30_02of10_SW_300ft.JPG","201E84_FL13-30_02of10_SW_325ft.JPG","201E84_FL13-30_02of10_SW_350ft.JPG","201E84_FL13-30_02of10_SW_375ft.JPG","201E84_FL13-30_03of10_S_150ft.JPG","201E84_FL13-30_03of10_S_175ft.JPG","201E84_FL13-30_03of10_S_200ft.JPG","201E84_FL13-30_03of10_S_225ft.JPG","201E84_FL13-30_03of10_S_250ft.JPG","201E84_FL13-30_03of10_S_275ft.JPG","201E84_FL13-30_03of10_S_300ft.JPG","201E84_FL13-30_03of10_S_325ft.JPG","201E84_FL13-30_03of10_S_350ft.JPG","201E84_FL13-30_03of10_S_375ft.JPG","201E84_FL13-30_04of10_SE_150ft.JPG","201E84_FL13-30_04of10_SE_175ft.JPG","201E84_FL13-30_04of10_SE_200ft.JPG","201E84_FL13-30_04of10_SE_225ft.JPG","201E84_FL13-30_04of10_SE_250ft.JPG","201E84_FL13-30_04of10_SE_275ft.JPG","201E84_FL13-30_04of10_SE_300ft.JPG","201E84_FL13-30_04of10_SE_325ft.JPG","201E84_FL13-30_04of10_SE_350ft.JPG","201E84_FL13-30_04of10_SE_375ft.JPG","201E84_FL13-30_05of10_E_150ft.JPG","201E84_FL13-30_05of10_E_175ft.JPG","201E84_FL13-30_05of10_E_200ft.JPG","201E84_FL13-30_05of10_E_225ft.JPG","201E84_FL13-30_05of10_E_250ft.JPG","201E84_FL13-30_05of10_E_275ft.JPG","201E84_FL13-30_05of10_E_300ft.JPG","201E84_FL13-30_05of10_E_325ft.JPG","201E84_FL13-30_05of10_E_350ft.JPG","201E84_FL13-30_05of10_E_375ft.JPG","201E84_FL13-30_06of10_NNE_150ft.JPG","201E84_FL13-30_06of10_NNE_175ft.JPG","201E84_FL13-30_06of10_NNE_200ft.JPG","201E84_FL13-30_06of10_NNE_225ft.JPG","201E84_FL13-30_06of10_NNE_250ft.JPG","201E84_FL13-30_06of10_NNE_275ft.JPG","201E84_FL13-30_06of10_NNE_300ft.JPG","201E84_FL13-30_06of10_NNE_325ft.JPG","201E84_FL13-30_06of10_NNE_350ft.JPG","201E84_FL13-30_06of10_NNE_375ft.JPG","201E84_FL13-30_07of10_NNW_150ft.JPG","201E84_FL13-30_07of10_NNW_175ft.JPG","201E84_FL13-30_07of10_NNW_200ft.JPG","201E84_FL13-30_07of10_NNW_225ft.JPG","201E84_FL13-30_07of10_NNW_250ft.JPG","201E84_FL13-30_07of10_NNW_275ft.JPG","201E84_FL13-30_07of10_NNW_300ft.JPG","201E84_FL13-30_07of10_NNW_325ft.JPG","201E84_FL13-30_07of10_NNW_350ft.JPG","201E84_FL13-30_07of10_NNW_375ft.JPG","201E84_FL13-30_08of10_WNW_150ft.JPG","201E84_FL13-30_08of10_WNW_175ft.JPG","201E84_FL13-30_08of10_WNW_200ft.JPG","201E84_FL13-30_08of10_WNW_225ft.JPG","201E84_FL13-30_08of10_WNW_250ft.JPG","201E84_FL13-30_08of10_WNW_275ft.JPG","201E84_FL13-30_08of10_WNW_300ft.JPG","201E84_FL13-30_08of10_WNW_325ft.JPG","201E84_FL13-30_08of10_WNW_350ft.JPG","201E84_FL13-30_08of10_WNW_375ft.JPG","201E84_FL13-30_09of10_WSW_150ft.JPG","201E84_FL13-30_09of10_WSW_175ft.JPG","201E84_FL13-30_09of10_WSW_200ft.JPG","201E84_FL13-30_09of10_WSW_225ft.JPG","201E84_FL13-30_09of10_WSW_250ft.JPG","201E84_FL13-30_09of10_WSW_275ft.JPG","201E84_FL13-30_09of10_WSW_300ft.JPG","201E84_FL13-30_09of10_WSW_325ft.JPG","201E84_FL13-30_09of10_WSW_350ft.JPG","201E84_FL13-30_09of10_WSW_375ft.JPG","201E84_FL13-30_10of10_SSW_150ft.JPG","201E84_FL13-30_10of10_SSW_175ft.JPG","201E84_FL13-30_10of10_SSW_200ft.JPG","201E84_FL13-30_10of10_SSW_225ft.JPG","201E84_FL13-30_10of10_SSW_250ft.JPG","201E84_FL13-30_10of10_SSW_275ft.JPG","201E84_FL13-30_10of10_SSW_300ft.JPG","201E84_FL13-30_10of10_SSW_325ft.JPG","201E84_FL13-30_10of10_SSW_350ft.JPG","201E84_FL13-30_10of10_SSW_375ft.JPG"]
+  },
+  "floors-6-12": {
+    label: "Floors 6–12",
+    description: "75–125 ft elevation",
+    path: "images/floors-6-12",
+    files: ["201E84_FL6-12_01of07_SSW_75ft.JPG","201E84_FL6-12_01of07_SSW_100ft.JPG","201E84_FL6-12_01of07_SSW_125ft.JPG","201E84_FL6-12_02of07_SSE_75ft.JPG","201E84_FL6-12_02of07_SSE_100ft.JPG","201E84_FL6-12_02of07_SSE_125ft.JPG","201E84_FL6-12_03of07_SSE_75ft.JPG","201E84_FL6-12_03of07_SSE_100ft.JPG","201E84_FL6-12_03of07_SSE_125ft.JPG","201E84_FL6-12_04of07_ENE_75ft.JPG","201E84_FL6-12_04of07_ENE_100ft.JPG","201E84_FL6-12_04of07_ENE_125ft.JPG","201E84_FL6-12_05of07_NNE_75ft.JPG","201E84_FL6-12_05of07_NNE_100ft.JPG","201E84_FL6-12_05of07_NNE_125ft.JPG","201E84_FL6-12_06of07_NNW_75ft.JPG","201E84_FL6-12_06of07_NNW_100ft.JPG","201E84_FL6-12_06of07_NNW_125ft.JPG","201E84_FL6-12_07of07_WSW_75ft.JPG","201E84_FL6-12_07of07_WSW_100ft.JPG","201E84_FL6-12_07of07_WSW_125ft.JPG"]
+  },
+  separators: {
+    label: "Aerial Views",
+    description: "Downward perspectives",
+    path: "images/separators",
+    files: ["201E84_Separator_01_475ft_S.JPG","201E84_Separator_02_400ft_SE.JPG","201E84_Separator_03_400ft_E.JPG","201E84_Separator_04_400ft_NW.JPG","201E84_Separator_05_400ft_W.JPG","201E84_Separator_06_175ft_SW.JPG","201E84_Separator_07_225ft_S.JPG","201E84_Separator_08_250ft_E.JPG","201E84_Separator_09_375ft_NNE.JPG","201E84_Separator_10_325ft_WNW.JPG","201E84_Separator_11_375ft_SSW.JPG","201E84_Separator_12_125ft_SSW.JPG","201E84_Separator_13_175ft_SSE.JPG","201E84_Separator_14_150ft_SSE.JPG","201E84_Separator_15_150ft_ENE.JPG","201E84_Separator_16_125ft_NNE.JPG","201E84_Separator_17_200ft_NNW.JPG","201E84_Separator_18_150ft_WSW.JPG"]
+  },
+  site: {
+    label: "Site Overview",
+    description: "Neighborhood context",
+    path: "images/site",
+    files: ["201E84_Site_01_425ft_S.JPG","201E84_Site_02_575ft_S.JPG","201E84_Site_03_700ft_S.JPG","201E84_Site_04_775ft_S.JPG","201E84_Site_05_725ft_S.JPG","201E84_Site_06_625ft_S.JPG","201E84_Site_07_575ft_S.JPG","201E84_Site_08_575ft_SSW.JPG","201E84_Site_09_600ft_SW.JPG","201E84_Site_10_600ft_SW.JPG","201E84_Site_11_600ft_SW.JPG","201E84_Site_12_525ft_SSW.JPG","201E84_Site_13_525ft_SW.JPG","201E84_Site_14_525ft_WSW.JPG","201E84_Site_15_475ft_WSW.JPG","201E84_Site_16_700ft_WSW.JPG","201E84_Site_17_400ft_WSW.JPG","201E84_Site_18_375ft_SSE.JPG","201E84_Site_19_500ft_SSE.JPG","201E84_Site_20_650ft_SSE.JPG","201E84_Site_21_700ft_SSE.JPG","201E84_Site_22_700ft_SSE.JPG","201E84_Site_23_700ft_SSE.JPG","201E84_Site_24_700ft_S.JPG","201E84_Site_25_700ft_S.JPG","201E84_Site_26_700ft_SE.JPG","201E84_Site_27_700ft_SE.JPG","201E84_Site_28_325ft_SSE.JPG","201E84_Site_29_200ft_SSE.JPG","201E84_Site_30_200ft_SSE.JPG","201E84_Site_31_200ft_SSE.JPG"]
+  },
+  property: {
+    label: "Property",
+    description: "Drone photography",
+    path: "images/property",
+    files: ["DJI_20260328115109_0001_D.JPG","DJI_20260328115118_0002_D.JPG","DJI_20260328115127_0003_D.JPG","DJI_20260328115138_0004_D.JPG","DJI_20260328115150_0005_D.JPG","DJI_20260328115201_0006_D.JPG","DJI_20260328115210_0007_D.JPG","DJI_20260328115220_0008_D.JPG","DJI_20260328115238_0009_D.JPG","DJI_20260328115301_0010_D.JPG","DJI_20260328115335_0011_D.JPG","DJI_20260328115345_0012_D.JPG","DJI_20260328115351_0013_D.JPG","DJI_20260328115359_0014_D.JPG","DJI_20260328115408_0015_D.JPG","DJI_20260328115414_0016_D.JPG","DJI_20260328115421_0017_D.JPG","DJI_20260328115427_0018_D.JPG","DJI_20260328115436_0019_D.JPG","DJI_20260328115450_0020_D.JPG","DJI_20260328115509_0021_D.JPG","DJI_20260328115516_0022_D.JPG","DJI_20260328115522_0023_D.JPG","DJI_20260328115530_0024_D.JPG","DJI_20260328115543_0025_D.JPG","DJI_20260328115551_0026_D.JPG","DJI_20260328115558_0027_D.JPG","DJI_20260328115604_0028_D.JPG","DJI_20260328115610_0029_D.JPG","DJI_20260328115627_0030_D.JPG","DJI_20260328115647_0031_D.JPG","DJI_20260328115658_0032_D.JPG","DJI_20260328115706_0033_D.JPG","DJI_20260328115712_0034_D.JPG","DJI_20260328115719_0035_D.JPG","DJI_20260328115728_0036_D.JPG","DJI_20260328115743_0037_D.JPG","DJI_20260328115749_0038_D.JPG","DJI_20260328115801_0039_D.JPG","DJI_20260328115934_0131_D.JPG","DJI_20260328115941_0132_D.JPG","DJI_20260328115948_0133_D.JPG","DJI_20260328115955_0134_D.JPG","DJI_20260328120004_0135_D.JPG","DJI_20260328120015_0136_D.JPG","DJI_20260328120026_0137_D.JPG","DJI_20260328120034_0138_D.JPG","DJI_20260328120041_0040_D.JPG","DJI_20260328120041_0139_D.JPG","DJI_20260328120047_0140_D.JPG","DJI_20260328120048_0041_D.JPG","DJI_20260328120058_0042_D.JPG","DJI_20260328120059_0141_D.JPG","DJI_20260328120107_0043_D.JPG","DJI_20260328120117_0044_D.JPG","DJI_20260328120125_0045_D.JPG","DJI_20260328120132_0142_D.JPG","DJI_20260328120136_0046_D.JPG","DJI_20260328120142_0047_D.JPG","DJI_20260328120143_0143_D.JPG","DJI_20260328120147_0048_D.JPG","DJI_20260328120149_0144_D.JPG","DJI_20260328120158_0145_D.JPG","DJI_20260328120205_0146_D.JPG","DJI_20260328120213_0147_D.JPG","DJI_20260328120222_0148_D.JPG","DJI_20260328120229_0149_D.JPG","DJI_20260328120233_0049_D.JPG","DJI_20260328120237_0150_D.JPG","DJI_20260328120243_0151_D.JPG","DJI_20260328120244_0050_D.JPG","DJI_20260328120251_0051_D.JPG","DJI_20260328120259_0052_D.JPG","DJI_20260328120306_0053_D.JPG","DJI_20260328120314_0054_D.JPG","DJI_20260328120314_0152_D.JPG","DJI_20260328120323_0055_D.JPG","DJI_20260328120323_0153_D.JPG","DJI_20260328120328_0056_D.JPG","DJI_20260328120336_0154_D.JPG","DJI_20260328120338_0057_D.JPG","DJI_20260328120344_0155_D.JPG","DJI_20260328120354_0058_D.JPG","DJI_20260328120355_0156_D.JPG","DJI_20260328120409_0157_D.JPG","DJI_20260328120416_0158_D.JPG","DJI_20260328120418_0059_D.JPG","DJI_20260328120422_0159_D.JPG","DJI_20260328120426_0060_D.JPG","DJI_20260328120429_0160_D.JPG","DJI_20260328120435_0161_D.JPG","DJI_20260328120436_0061_D.JPG","DJI_20260328120442_0062_D.JPG","DJI_20260328120442_0162_D.JPG","DJI_20260328120450_0063_D.JPG","DJI_20260328120458_0064_D.JPG","DJI_20260328120511_0065_D.JPG","DJI_20260328120515_0163_D.JPG","DJI_20260328120523_0066_D.JPG","DJI_20260328120529_0067_D.JPG","DJI_20260328120529_0164_D.JPG","DJI_20260328120535_0165_D.JPG","DJI_20260328120540_0068_D.JPG","DJI_20260328120542_0166_D.JPG","DJI_20260328120549_0167_D.JPG","DJI_20260328120556_0168_D.JPG","DJI_20260328120604_0069_D.JPG","DJI_20260328120604_0169_D.JPG","DJI_20260328120612_0070_D.JPG","DJI_20260328120619_0071_D.JPG","DJI_20260328120625_0072_D.JPG","DJI_20260328120627_0170_D.JPG","DJI_20260328120632_0073_D.JPG","DJI_20260328120640_0074_D.JPG","DJI_20260328120642_0171_D.JPG","DJI_20260328120647_0075_D.JPG","DJI_20260328120653_0076_D.JPG","DJI_20260328120656_0172_D.JPG","DJI_20260328120700_0077_D.JPG","DJI_20260328120723_0173_D.JPG","DJI_20260328120730_0174_D.JPG","DJI_20260328120737_0175_D.JPG","DJI_20260328120744_0176_D.JPG","DJI_20260328120754_0177_D.JPG","DJI_20260328120800_0178_D.JPG","DJI_20260328120806_0179_D.JPG","DJI_20260328120813_0180_D.JPG","DJI_20260328120820_0181_D.JPG","DJI_20260328120827_0182_D.JPG","DJI_20260328120833_0183_D.JPG","DJI_20260328120845_0078_D.JPG","DJI_20260328120858_0079_D.JPG","DJI_20260328120906_0080_D.JPG","DJI_20260328120913_0081_D.JPG","DJI_20260328120919_0082_D.JPG","DJI_20260328120925_0083_D.JPG","DJI_20260328120933_0084_D.JPG","DJI_20260328120939_0085_D.JPG","DJI_20260328120949_0086_D.JPG","DJI_20260328120956_0087_D.JPG","DJI_20260328121009_0185_D.JPG","DJI_20260328121013_0088_D.JPG","DJI_20260328121017_0186_D.JPG","DJI_20260328121023_0187_D.JPG","DJI_20260328121029_0188_D.JPG","DJI_20260328121044_0089_D.JPG","DJI_20260328121059_0090_D.JPG","DJI_20260328121106_0091_D.JPG","DJI_20260328121115_0092_D.JPG","DJI_20260328121117_0189_D.JPG","DJI_20260328121121_0093_D.JPG","DJI_20260328121128_0094_D.JPG","DJI_20260328121130_0190_D.JPG","DJI_20260328121137_0095_D.JPG","DJI_20260328121143_0191_D.JPG","DJI_20260328121146_0096_D.JPG","DJI_20260328121153_0097_D.JPG","DJI_20260328121158_0192_D.JPG","DJI_20260328121202_0098_D.JPG","DJI_20260328121215_0193_D.JPG","DJI_20260328121223_0194_D.JPG","DJI_20260328121226_0099_D.JPG","DJI_20260328121232_0195_D.JPG","DJI_20260328121239_0196_D.JPG","DJI_20260328121250_0100_D.JPG","DJI_20260328121257_0101_D.JPG","DJI_20260328121301_0197_D.JPG","DJI_20260328121303_0102_D.JPG","DJI_20260328121309_0198_D.JPG","DJI_20260328121311_0103_D.JPG","DJI_20260328121316_0199_D.JPG","DJI_20260328121320_0104_D.JPG","DJI_20260328121327_0200_D.JPG","DJI_20260328121328_0105_D.JPG","DJI_20260328121335_0106_D.JPG","DJI_20260328121344_0107_D.JPG","DJI_20260328121352_0108_D.JPG","DJI_20260328121359_0109_D.JPG","DJI_20260328121410_0201_D.JPG","DJI_20260328121417_0202_D.JPG","DJI_20260328121425_0203_D.JPG","DJI_20260328121434_0204_D.JPG","DJI_20260328121445_0110_D.JPG","DJI_20260328121454_0111_D.JPG","DJI_20260328121459_0205_D.JPG","DJI_20260328121502_0112_D.JPG","DJI_20260328121508_0206_D.JPG","DJI_20260328121511_0113_D.JPG","DJI_20260328121514_0207_D.JPG","DJI_20260328121518_0114_D.JPG","DJI_20260328121521_0208_D.JPG","DJI_20260328121524_0115_D.JPG","DJI_20260328121529_0116_D.JPG","DJI_20260328121536_0117_D.JPG","DJI_20260328121541_0209_D.JPG","DJI_20260328121543_0118_D.JPG","DJI_20260328121552_0119_D.JPG","DJI_20260328121552_0210_D.JPG","DJI_20260328121559_0211_D.JPG","DJI_20260328121607_0212_D.JPG","DJI_20260328121608_0120_D.JPG","DJI_20260328121627_0121_D.JPG","DJI_20260328121632_0122_D.JPG","DJI_20260328121639_0123_D.JPG","DJI_20260328121644_0124_D.JPG","DJI_20260328121650_0125_D.JPG","DJI_20260328121657_0126_D.JPG","DJI_20260328121705_0127_D.JPG","DJI_20260328121711_0128_D.JPG","DJI_20260328121716_0129_D.JPG","DJI_20260328121725_0130_D.JPG","DJI_20260328121816_0213_D.JPG","DJI_20260328121826_0214_D.JPG","DJI_20260328121833_0215_D.JPG","DJI_20260328121839_0216_D.JPG","DJI_20260328121844_0217_D.JPG","DJI_20260328121850_0218_D.JPG","DJI_20260328121856_0219_D.JPG","DJI_20260328121907_0220_D.JPG","DJI_20260328121915_0221_D.JPG","DJI_20260328121923_0222_D.JPG","DJI_20260328121930_0223_D.JPG","DJI_20260328121941_0224_D.JPG","DJI_20260328121946_0225_D.JPG","DJI_20260328121958_0226_D.JPG","DJI_20260328122004_0227_D.JPG","DJI_20260328122015_0228_D.JPG","DJI_20260328122029_0229_D.JPG","DJI_20260328122138_0230_D.JPG","DJI_20260328122145_0231_D.JPG","DJI_20260328122153_0232_D.JPG","DJI_20260328122158_0233_D.JPG","DJI_20260328122210_0234_D.JPG","DJI_20260328122215_0235_D.JPG","DJI_20260328122221_0236_D.JPG","DJI_20260328122228_0237_D.JPG","DJI_20260328122234_0238_D.JPG","DJI_20260328122241_0239_D.JPG","DJI_20260328122301_0240_D.JPG","DJI_20260328122310_0241_D.JPG","DJI_20260328122316_0242_D.JPG","DJI_20260328122322_0243_D.JPG"]
+  }
+};
+
+// ──────────────────────────────────────
+// STATE
+// ──────────────────────────────────────
+let state = {
+  activeFilter: 'all',
+  visibleCount: 24,
+  hiddenPhotos: {},
+  content: {
+    heroEyebrow: 'Upper East Side · New York',
+    heroTitle: '201 East 84th',
+    heroSubtitle: 'A new standard of elevated living on the Upper East Side',
+    galleryTitle: 'Unparalleled Perspectives',
+    galleryDesc: 'Panoramic drone photography capturing every vantage point from 75 to 600 feet across all orientations.',
+    contactEmail: 'info@201east84.com'
+  },
+  settings: {
+    photosPerPage: 24,
+    heroAutoRotate: true,
+    heroInterval: 6000
+  }
+};
+
+// Load saved state
+try {
+  const saved = localStorage.getItem('legion_cms');
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    state = { ...state, ...parsed, activeFilter: 'all', visibleCount: parsed.settings?.photosPerPage || 24 };
+  }
+} catch(e) {}
+
+function saveState() {
+  localStorage.setItem('legion_cms', JSON.stringify({
+    hiddenPhotos: state.hiddenPhotos,
+    content: state.content,
+    settings: state.settings
+  }));
+}
+
+// ──────────────────────────────────────
+// HELPERS
+// ──────────────────────────────────────
+function getVisiblePhotos(category) {
+  const cat = CATEGORIES[category];
+  return cat.files.filter(f => !state.hiddenPhotos[category + '/' + f]);
+}
+
+function getAllVisiblePhotos() {
+  let photos = [];
+  const cats = state.activeFilter === 'all' ? Object.keys(CATEGORIES) : [state.activeFilter];
+  cats.forEach(cat => {
+    getVisiblePhotos(cat).forEach(f => {
+      photos.push({ category: cat, file: f, path: CATEGORIES[cat].path + '/' + f });
+    });
+  });
+  return photos;
+}
+
+function parseLabel(filename) {
+  // "201E84_Crown_01of08_SW_400ft.JPG" -> "Crown · SW · 400ft"
+  const m = filename.match(/Crown_(\d+of\d+)_(\w+)_(\d+ft)/);
+  if (m) return `Crown · ${m[2]} · ${m[3]}`;
+  const m2 = filename.match(/FL(\d+-\d+)_(\d+of\d+)_(\w+)_(\d+ft)/);
+  if (m2) return `FL ${m2[1]} · ${m2[3]} · ${m2[4]}`;
+  const m3 = filename.match(/FL(\d+-\d+)_(\d+of\d+)_(\w+)_(\d+ft)/);
+  if (m3) return `FL ${m3[1]} · ${m3[3]} · ${m3[4]}`;
+  const m4 = filename.match(/Separator_(\d+)_(\d+ft)_(\w+)/);
+  if (m4) return `Aerial · ${m4[3]} · ${m4[2]}`;
+  const m5 = filename.match(/Site_(\d+)_(\d+ft)_(\w+)/);
+  if (m5) return `Site · ${m5[3]} · ${m5[2]}`;
+  const m6 = filename.match(/DJI_\d+_(\d+)_D/);
+  if (m6) return `Property · #${m6[1]}`;
+  return filename.replace('.JPG','');
+}
+
+// ──────────────────────────────────────
+// HERO
+// ──────────────────────────────────────
+const heroImages = [
+  CATEGORIES.crown.path + '/' + CATEGORIES.crown.files[0],
+  CATEGORIES.site.path + '/' + CATEGORIES.site.files[3],
+  CATEGORIES.crown.path + '/' + CATEGORIES.crown.files[36],
+  CATEGORIES["floors-13-30"].path + '/' + CATEGORIES["floors-13-30"].files[20],
+  CATEGORIES.site.path + '/' + CATEGORIES.site.files[8]
+];
+
+let heroIdx = 0;
+const heroBg = document.getElementById('heroBg');
+
+function setHeroBg() {
+  heroBg.style.backgroundImage = `url('${heroImages[heroIdx]}')`;
+}
+setHeroBg();
+
+// Set building image
+document.getElementById('buildingImg').src = CATEGORIES.site.path + '/' + CATEGORIES.site.files[0];
+
+if (state.settings.heroAutoRotate) {
+  setInterval(() => {
+    heroIdx = (heroIdx + 1) % heroImages.length;
+    heroBg.style.opacity = 0;
+    setTimeout(() => { setHeroBg(); heroBg.style.opacity = 1; }, 800);
+  }, state.settings.heroInterval);
+}
+
+// Apply content
+function applyContent() {
+  document.getElementById('heroEyebrow').textContent = state.content.heroEyebrow;
+  document.getElementById('heroTitle').textContent = state.content.heroTitle;
+  document.getElementById('heroSubtitle').textContent = state.content.heroSubtitle;
+  document.getElementById('galleryTitle').textContent = state.content.galleryTitle;
+  document.getElementById('galleryDesc').textContent = state.content.galleryDesc;
+  document.getElementById('contactBtn').href = 'mailto:' + state.content.contactEmail;
+}
+applyContent();
+
+// ──────────────────────────────────────
+// NAV SCROLL
+// ──────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 80);
+});
+
+// ──────────────────────────────────────
+// GALLERY
+// ──────────────────────────────────────
+const grid = document.getElementById('galleryGrid');
+const counter = document.getElementById('galleryCounter');
+const filtersEl = document.getElementById('galleryFilters');
+const loadMoreWrap = document.getElementById('loadMoreWrap');
+
+function buildFilters() {
+  let html = `<button class="filter-btn ${state.activeFilter === 'all' ? 'active' : ''}" data-filter="all">All</button>`;
+  Object.keys(CATEGORIES).forEach(key => {
+    html += `<button class="filter-btn ${state.activeFilter === key ? 'active' : ''}" data-filter="${key}">${CATEGORIES[key].label}</button>`;
+  });
+  filtersEl.innerHTML = html;
+  filtersEl.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.activeFilter = btn.dataset.filter;
+      state.visibleCount = state.settings.photosPerPage;
+      buildFilters();
+      renderGallery();
+    });
+  });
+}
+
+function renderGallery() {
+  const photos = getAllVisiblePhotos();
+  const showing = photos.slice(0, state.visibleCount);
+  counter.innerHTML = `Showing <span>${showing.length}</span> of <span>${photos.length}</span> photographs`;
+
+  grid.innerHTML = showing.map((p, i) => `
+    <div class="gallery-thumb" data-idx="${i}" onclick="openLightbox(${i})">
+      <img src="${p.path}" alt="${parseLabel(p.file)}" loading="lazy">
+      <div class="thumb-overlay">
+        <span class="thumb-label">${parseLabel(p.file)}</span>
+      </div>
+    </div>
+  `).join('');
+
+  loadMoreWrap.style.display = state.visibleCount >= photos.length ? 'none' : 'block';
+}
+
+document.getElementById('loadMoreBtn').addEventListener('click', () => {
+  state.visibleCount += state.settings.photosPerPage;
+  renderGallery();
+});
+
+buildFilters();
+renderGallery();
+
+// ──────────────────────────────────────
+// LIGHTBOX
+// ──────────────────────────────────────
+const lightbox = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+const lbCaption = document.getElementById('lbCaption');
+const lbCount = document.getElementById('lbCount');
+let lbIdx = 0;
+let lbPhotos = [];
+
+function openLightbox(idx) {
+  lbPhotos = getAllVisiblePhotos();
+  lbIdx = idx;
+  updateLightbox();
+  lightbox.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function updateLightbox() {
+  const p = lbPhotos[lbIdx];
+  lbImg.src = p.path;
+  lbCaption.textContent = parseLabel(p.file);
+  lbCount.textContent = `${lbIdx + 1} / ${lbPhotos.length}`;
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+document.getElementById('lbPrev').addEventListener('click', () => { lbIdx = (lbIdx - 1 + lbPhotos.length) % lbPhotos.length; updateLightbox(); });
+document.getElementById('lbNext').addEventListener('click', () => { lbIdx = (lbIdx + 1) % lbPhotos.length; updateLightbox(); });
+
+lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+
+document.addEventListener('keydown', (e) => {
+  if (!lightbox.classList.contains('active')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') { lbIdx = (lbIdx - 1 + lbPhotos.length) % lbPhotos.length; updateLightbox(); }
+  if (e.key === 'ArrowRight') { lbIdx = (lbIdx + 1) % lbPhotos.length; updateLightbox(); }
+});
+
+// ──────────────────────────────────────
+// CMS
+// ──────────────────────────────────────
+const cmsPanel = document.getElementById('cmsPanel');
+const cmsOverlay = document.getElementById('cmsOverlay');
+const cmsBody = document.getElementById('cmsBody');
+let activeTab = 'photos';
+
+function openCMS() { cmsPanel.classList.add('open'); cmsOverlay.classList.add('active'); renderCMSTab(); }
+function closeCMS() { cmsPanel.classList.remove('open'); cmsOverlay.classList.remove('active'); }
+
+document.getElementById('cmsTrigger').addEventListener('click', openCMS);
+document.getElementById('cms-open-nav').addEventListener('click', (e) => { e.preventDefault(); openCMS(); });
+document.getElementById('cms-open-footer').addEventListener('click', (e) => { e.preventDefault(); openCMS(); });
+document.getElementById('cmsClose').addEventListener('click', closeCMS);
+cmsOverlay.addEventListener('click', closeCMS);
+
+document.querySelectorAll('.cms-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.cms-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    activeTab = tab.dataset.tab;
+    renderCMSTab();
+  });
+});
+
+function showToast(msg = 'Saved') {
+  const toast = document.getElementById('cmsToast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+function renderCMSTab() {
+  if (activeTab === 'photos') renderPhotosTab();
+  else if (activeTab === 'content') renderContentTab();
+  else renderSettingsTab();
+}
+
+function renderPhotosTab() {
+  let html = '';
+  Object.keys(CATEGORIES).forEach(catKey => {
+    const cat = CATEGORIES[catKey];
+    const visible = getVisiblePhotos(catKey).length;
+    const total = cat.files.length;
+    html += `
+      <div class="cms-category">
+        <div class="cms-category-header">
+          <span class="cms-category-name">${cat.label}</span>
+          <span class="cms-category-count">${visible} / ${total} visible</span>
+        </div>
+        <div class="cms-photo-list">
+    `;
+    cat.files.forEach(f => {
+      const key = catKey + '/' + f;
+      const hidden = !!state.hiddenPhotos[key];
+      html += `
+        <div class="cms-photo-item ${hidden ? 'hidden-photo' : ''}">
+          <img class="cms-photo-thumb" src="${cat.path}/${f}" loading="lazy" alt="">
+          <span class="cms-photo-name">${parseLabel(f)}</span>
+          <button class="cms-photo-toggle ${hidden ? '' : 'on'}" data-key="${key}" onclick="togglePhoto('${key}')"></button>
+        </div>
+      `;
+    });
+    html += `</div></div>`;
+  });
+  cmsBody.innerHTML = html;
+}
+
+window.togglePhoto = function(key) {
+  if (state.hiddenPhotos[key]) delete state.hiddenPhotos[key];
+  else state.hiddenPhotos[key] = true;
+  saveState();
+  renderGallery();
+  renderPhotosTab();
+  showToast('Photo updated');
+};
+
+function renderContentTab() {
+  cmsBody.innerHTML = `
+    <div class="cms-field">
+      <label class="cms-label">Hero Eyebrow</label>
+      <input class="cms-input" id="cms-heroEyebrow" value="${state.content.heroEyebrow}">
+    </div>
+    <div class="cms-field">
+      <label class="cms-label">Hero Title</label>
+      <input class="cms-input" id="cms-heroTitle" value="${state.content.heroTitle}">
+    </div>
+    <div class="cms-field">
+      <label class="cms-label">Hero Subtitle</label>
+      <textarea class="cms-input cms-textarea" id="cms-heroSubtitle">${state.content.heroSubtitle}</textarea>
+    </div>
+    <div class="cms-field">
+      <label class="cms-label">Gallery Title</label>
+      <input class="cms-input" id="cms-galleryTitle" value="${state.content.galleryTitle}">
+    </div>
+    <div class="cms-field">
+      <label class="cms-label">Gallery Description</label>
+      <textarea class="cms-input cms-textarea" id="cms-galleryDesc">${state.content.galleryDesc}</textarea>
+    </div>
+    <div class="cms-field">
+      <label class="cms-label">Contact Email</label>
+      <input class="cms-input" id="cms-contactEmail" value="${state.content.contactEmail}">
+    </div>
+    <button class="cms-save" onclick="saveContent()">Save Content</button>
+  `;
+}
+
+window.saveContent = function() {
+  state.content.heroEyebrow = document.getElementById('cms-heroEyebrow').value;
+  state.content.heroTitle = document.getElementById('cms-heroTitle').value;
+  state.content.heroSubtitle = document.getElementById('cms-heroSubtitle').value;
+  state.content.galleryTitle = document.getElementById('cms-galleryTitle').value;
+  state.content.galleryDesc = document.getElementById('cms-galleryDesc').value;
+  state.content.contactEmail = document.getElementById('cms-contactEmail').value;
+  saveState();
+  applyContent();
+  showToast('Content saved');
+};
+
+function renderSettingsTab() {
+  cmsBody.innerHTML = `
+    <div class="cms-field">
+      <label class="cms-label">Photos Per Page</label>
+      <input class="cms-input" type="number" id="cms-photosPerPage" value="${state.settings.photosPerPage}" min="6" max="100">
+    </div>
+    <div class="cms-field">
+      <label class="cms-label">Hero Auto-Rotate</label>
+      <button class="cms-photo-toggle ${state.settings.heroAutoRotate ? 'on' : ''}" id="cms-heroAutoToggle" onclick="toggleHeroAuto()" style="display:block;margin-top:8px;"></button>
+    </div>
+    <div class="cms-field">
+      <label class="cms-label">Hero Rotation Speed (ms)</label>
+      <input class="cms-input" type="number" id="cms-heroInterval" value="${state.settings.heroInterval}" min="2000" max="15000" step="500">
+    </div>
+    <div class="cms-field" style="margin-top:40px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.08);">
+      <label class="cms-label" style="color:#ff6b6b;">Danger Zone</label>
+      <button class="cms-save" style="background:#ff6b6b;margin-top:12px;" onclick="resetCMS()">Reset All CMS Data</button>
+    </div>
+    <button class="cms-save" onclick="saveSettings()">Save Settings</button>
+  `;
+}
+
+window.toggleHeroAuto = function() {
+  state.settings.heroAutoRotate = !state.settings.heroAutoRotate;
+  saveState();
+  renderSettingsTab();
+  showToast('Requires page reload');
+};
+
+window.saveSettings = function() {
+  state.settings.photosPerPage = parseInt(document.getElementById('cms-photosPerPage').value) || 24;
+  state.settings.heroInterval = parseInt(document.getElementById('cms-heroInterval').value) || 6000;
+  state.visibleCount = state.settings.photosPerPage;
+  saveState();
+  renderGallery();
+  showToast('Settings saved');
+};
+
+window.resetCMS = function() {
+  if (confirm('Reset all CMS customizations? This cannot be undone.')) {
+    localStorage.removeItem('legion_cms');
+    location.reload();
+  }
+};
+</script>
+
+</body>
+</html>
