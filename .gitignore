@@ -9,3 +9,4 @@ Thumbs.db
 
 # Image symlinks are local - photos live outside repo
 # images/
+.vercel
