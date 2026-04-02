@@ -89,9 +89,11 @@ nav.scrolled {
   opacity:0; animation:fadeUp .8s .3s forwards;
 }
 .hero-title {
-  font-family:var(--font); font-size:clamp(48px,9vw,96px);
-  font-weight:400; line-height:1; letter-spacing:12px; text-transform:uppercase;
   margin-bottom:20px; opacity:0; animation:fadeUp .8s .5s forwards;
+  line-height:1;
+}
+.hero-logo {
+  height:clamp(48px,9vw,80px); width:auto; opacity:.95;
 }
 .hero-sub {
   font-size:13px; font-weight:400; letter-spacing:3px;
@@ -617,11 +619,8 @@ footer a:hover { color:#fff; }
   transition:opacity .6s var(--ease), visibility .6s;
 }
 .pw-gate.dismissed { opacity:0; visibility:hidden; pointer-events:none; }
-.pw-gate-logo { height:20px; width:auto; opacity:.8; margin-bottom:8px; }
-.pw-gate-title {
-  font-family:var(--font); font-size:clamp(36px,7vw,56px);
-  font-weight:400; letter-spacing:10px; text-transform:uppercase;
-  color:#fff; text-align:center;
+.pw-gate-logo {
+  height:clamp(40px,8vw,64px); width:auto; opacity:.9;
 }
 .pw-gate-sub {
   font-size:11px; letter-spacing:3px; text-transform:uppercase;
@@ -659,7 +658,6 @@ footer a:hover { color:#fff; }
 
 <div class="pw-gate" id="pwGate">
   <img class="pw-gate-logo" src="https://www.legioninvestmentgroup.com/cdn/shop/files/legion-logo-white.png?crop=center&height=60&v=1719506424&width=320" alt="Legion">
-  <div class="pw-gate-title">LEGION</div>
   <div class="pw-gate-sub">201 East 84th Street</div>
   <form class="pw-form" onsubmit="return checkPw(event)">
     <input type="password" class="pw-input" id="pwInput" placeholder="Password" autofocus>
@@ -686,7 +684,7 @@ footer a:hover { color:#fff; }
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <div class="hero-eyebrow">Upper East Side &mdash; Manhattan</div>
-    <h1 class="hero-title">LEGION</h1>
+    <h1 class="hero-title"><img class="hero-logo" src="https://www.legioninvestmentgroup.com/cdn/shop/files/legion-logo-white.png?crop=center&height=60&v=1719506424&width=320" alt="LEGION"></h1>
     <p class="hero-sub">201 East 84th Street</p>
     <a href="#explorer" class="hero-btn">Explore Views</a>
   </div>
