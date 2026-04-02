@@ -607,10 +607,68 @@ footer a:hover { color:#fff; }
   .form-row { flex-direction:column; gap:0; }
   .contact-inner { max-width:100%; }
 }
+/* PASSWORD GATE */
+.pw-gate {
+  position:fixed; inset:0; z-index:9999;
+  background:var(--bg-dark);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:24px; padding:32px;
+  transition:opacity .6s var(--ease), visibility .6s;
+}
+.pw-gate.dismissed { opacity:0; visibility:hidden; pointer-events:none; }
+.pw-gate-logo { height:20px; width:auto; opacity:.8; margin-bottom:8px; }
+.pw-gate-title {
+  font-family:var(--font); font-size:clamp(36px,7vw,56px);
+  font-weight:400; letter-spacing:10px; text-transform:uppercase;
+  color:#fff; text-align:center;
+}
+.pw-gate-sub {
+  font-size:11px; letter-spacing:3px; text-transform:uppercase;
+  color:rgba(255,255,255,.35); margin-top:-8px;
+}
+.pw-form {
+  display:flex; gap:0; margin-top:16px; max-width:360px; width:100%;
+}
+.pw-input {
+  flex:1; padding:14px 18px;
+  background:rgba(255,255,255,.04); border:1px solid rgba(121,126,128,.2);
+  border-right:none; color:#fff;
+  font-family:var(--font); font-size:13px; letter-spacing:1px;
+  outline:none; transition:border-color .3s;
+}
+.pw-input::placeholder { color:rgba(255,255,255,.25); letter-spacing:2px; font-size:11px; }
+.pw-input:focus { border-color:rgba(255,255,255,.35); }
+.pw-btn {
+  padding:14px 24px; background:transparent;
+  border:1px solid rgba(121,126,128,.2);
+  color:rgba(255,255,255,.7); font-family:var(--font);
+  font-size:11px; letter-spacing:2px; text-transform:uppercase;
+  cursor:pointer; transition:all .3s var(--ease); white-space:nowrap;
+}
+.pw-btn:hover { background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.3); color:#fff; }
+.pw-error {
+  font-size:11px; letter-spacing:1px; color:rgba(200,80,80,.8);
+  height:16px; transition:opacity .3s;
+}
+.site-content { visibility:hidden; height:0; overflow:hidden; }
+.site-content.visible { visibility:visible; height:auto; overflow:visible; }
 </style>
 </head>
 <body>
 
+<div class="pw-gate" id="pwGate">
+  <img class="pw-gate-logo" src="https://www.legioninvestmentgroup.com/cdn/shop/files/legion-logo-white.png?crop=center&height=60&v=1719506424&width=320" alt="Legion">
+  <div class="pw-gate-title">LEGION</div>
+  <div class="pw-gate-sub">201 East 84th Street</div>
+  <form class="pw-form" onsubmit="return checkPw(event)">
+    <input type="password" class="pw-input" id="pwInput" placeholder="Password" autofocus>
+    <button type="submit" class="pw-btn">Enter</button>
+  </form>
+  <div class="pw-error" id="pwError">&nbsp;</div>
+</div>
+
+<div class="site-content" id="siteContent">
 <nav id="navbar">
   <a class="nav-logo" href="#">
     <img src="https://www.legioninvestmentgroup.com/cdn/shop/files/legion-logo-white.png?crop=center&height=60&v=1719506424&width=320" alt="Legion Investment Group">
@@ -1262,9 +1320,34 @@ if (window.innerWidth <= 900) {
 // ── BUILDING FEATURED IMAGE ──
 document.getElementById('buildingFeatured').src = imgUrl(F.site.items[2].id);
 
-// ── INIT ──
-initHero();
-render();
+// ── PASSWORD GATE ──
+var siteReady = false;
+function unlockSite() {
+  document.getElementById('pwGate').classList.add('dismissed');
+  document.getElementById('siteContent').classList.add('visible');
+  if (!siteReady) {
+    initHero();
+    render();
+    siteReady = true;
+  }
+  sessionStorage.setItem('pw-ok', '1');
+}
+function checkPw(e) {
+  e.preventDefault();
+  if (document.getElementById('pwInput').value === 'legion123') {
+    unlockSite();
+  } else {
+    document.getElementById('pwError').textContent = 'Incorrect password';
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
+  }
+  return false;
+}
+// Auto-unlock if already authenticated this session
+if (sessionStorage.getItem('pw-ok')) {
+  unlockSite();
+}
 </script>
+</div><!-- /site-content -->
 </body>
 </html>
