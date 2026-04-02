@@ -200,6 +200,54 @@ nav.scrolled {
 .dir-item.active .dir-indicator { background:var(--primary-light); width:6px; height:6px; }
 .dir-item:hover .dir-indicator { background:rgba(255,255,255,.6); }
 
+/* ELEVATION SUB-GROUPS */
+.elev-group { }
+.elev-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 24px 8px 36px; cursor:pointer;
+  transition:all .25s var(--ease); border:none;
+  background:transparent; width:100%;
+  font-family:var(--font); text-align:left; color:var(--text-light);
+  font-size:13px; font-weight:500; letter-spacing:.5px;
+}
+.elev-header:hover { background:rgba(121,126,128,.06); color:#fff; }
+.elev-header.active { color:#fff; background:rgba(121,126,128,.08); }
+.elev-header .elev-ft { flex:1; }
+.elev-header .elev-chevron {
+  width:12px; height:12px; transition:transform .3s var(--ease-out);
+  color:var(--text-light); flex-shrink:0;
+}
+.elev-header.active .elev-chevron { transform:rotate(180deg); color:#fff; }
+
+.elev-dirs {
+  max-height:0; overflow:hidden;
+  transition:max-height .4s var(--ease-out), opacity .25s;
+  opacity:0;
+}
+.elev-dirs.open { opacity:1; }
+
+.dir-item-nested {
+  display:flex; align-items:center; gap:10px;
+  padding:7px 24px 7px 52px; cursor:pointer;
+  transition:all .25s var(--ease); border:none;
+  background:transparent; width:100%;
+  font-family:var(--font); text-align:left; color:var(--text-light);
+  font-size:12px; font-weight:400; letter-spacing:.5px;
+}
+.dir-item-nested:hover { background:rgba(121,126,128,.06); color:#fff; }
+.dir-item-nested.active {
+  color:#fff; background:rgba(121,126,128,.1);
+  border-left:2px solid var(--primary-light);
+  padding-left:50px;
+}
+.dir-item-nested .dir-indicator {
+  width:4px; height:4px; border-radius:50%;
+  background:var(--text-light); transition:all .3s;
+  flex-shrink:0;
+}
+.dir-item-nested.active .dir-indicator { background:var(--primary-light); width:6px; height:6px; }
+.dir-item-nested:hover .dir-indicator { background:rgba(255,255,255,.6); }
+
 /* GALLERY ITEMS IN SIDEBAR */
 .gallery-sidebar-label {
   padding:12px 24px 8px 36px;
@@ -239,11 +287,7 @@ nav.scrolled {
 .vi-label { font-size:12px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.7); font-weight:400; }
 .vi-detail { font-size:11px; color:var(--primary-light); letter-spacing:1px; margin-top:2px; }
 
-/* ELEVATION CONTROLS */
-.elev-controls {
-  display:flex; align-items:center; gap:20px;
-  padding:20px 0 8px;
-}
+/* ELEVATION LABEL (legacy) */
 .elev-label {
   font-size:10px; letter-spacing:2px; text-transform:uppercase;
   color:var(--text-light); white-space:nowrap; font-weight:500;
@@ -535,11 +579,6 @@ footer a:hover { color:#fff; }
               </div>
             </div>
           </div>
-          <div class="elev-controls" id="elevWrap">
-            <span class="elev-label">Elevation</span>
-            <input type="range" class="elev-slider" id="elevSlider">
-            <span class="elev-value" id="elevValue"></span>
-          </div>
           <div class="thumb-strip" id="thumbStrip"></div>
         </div>
       </div>
@@ -662,13 +701,32 @@ const F = {
 const imgUrl = path => path;
 const thumbUrl = path => path;
 
+// ── HELPERS: pivot data by elevation ──
+function getElevations(key) {
+  var data = F[key];
+  if (!data.views) return [];
+  var set = {};
+  data.views.forEach(function(v) {
+    Object.keys(v.e).forEach(function(el) { set[Number(el)] = true; });
+  });
+  return Object.keys(set).map(Number).sort(function(a,b){return b-a;}); // high to low
+}
+function getDirsAtElev(key, elev) {
+  var out = [];
+  F[key].views.forEach(function(v) {
+    if (v.e[elev]) out.push({ d: v.d, path: v.e[elev] });
+  });
+  return out;
+}
+
 // ── STATE ──
 let curFloor = 'crown';
-let curView = 0;
-let curElev = null;
+let curElev = 500;
+let curDir = 'SW';
 let lbImages = [];
 let lbIdx = 0;
 let openFloor = 'crown';
+let openElev = 500;
 
 const floorKeys = ['crown', 'floors-13-30', 'floors-6-12', 'site', 'separators'];
 
@@ -700,99 +758,157 @@ function initHero() {
   let ht = setInterval(next, 6000);
 }
 
+// ── SIDEBAR: build chevron SVG ──
+function makeSvgChevron(cls) {
+  var s = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  s.setAttribute('class', cls);
+  s.setAttribute('viewBox','0 0 24 24');
+  s.setAttribute('fill','none');
+  s.setAttribute('stroke','currentColor');
+  s.setAttribute('stroke-width','1.5');
+  var p = document.createElementNS('http://www.w3.org/2000/svg','path');
+  p.setAttribute('d','M6 9l6 6 6-6');
+  s.appendChild(p);
+  return s;
+}
+
 // ── SIDEBAR NAVIGATION ──
 function buildSidebar() {
-  const nav = document.getElementById('sidebarNav');
+  var nav = document.getElementById('sidebarNav');
   nav.textContent = '';
 
   floorKeys.forEach(function(key) {
-    const data = F[key];
-    const isGallery = key === 'site' || key === 'separators';
-    const group = document.createElement('div');
+    var data = F[key];
+    var isGallery = key === 'site' || key === 'separators';
+    var group = document.createElement('div');
     group.className = 'floor-group';
 
-    // Header button
-    const header = document.createElement('button');
+    // Floor header
+    var header = document.createElement('button');
     header.className = 'floor-header' + (openFloor === key ? ' active' : '');
-
-    const headerLeft = document.createElement('div');
-    const nameEl = document.createElement('div');
+    var headerLeft = document.createElement('div');
+    var nameEl = document.createElement('div');
     nameEl.className = 'floor-name';
     nameEl.textContent = data.label;
-    const subEl = document.createElement('div');
+    var subEl = document.createElement('div');
     subEl.className = 'floor-sub';
     subEl.textContent = data.sub;
     headerLeft.appendChild(nameEl);
     headerLeft.appendChild(subEl);
-
-    const chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    chevron.setAttribute('class', 'floor-chevron');
-    chevron.setAttribute('viewBox', '0 0 24 24');
-    chevron.setAttribute('fill', 'none');
-    chevron.setAttribute('stroke', 'currentColor');
-    chevron.setAttribute('stroke-width', '1.5');
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    path.setAttribute('d', 'M6 9l6 6 6-6');
-    chevron.appendChild(path);
-
     header.appendChild(headerLeft);
-    header.appendChild(chevron);
+    header.appendChild(makeSvgChevron('floor-chevron'));
 
     header.onclick = function() {
-      openFloor = openFloor === key ? null : key;
       if (openFloor === key) {
-        curFloor = key;
-        curView = 0;
-        curElev = null;
-        render();
-      } else {
+        openFloor = null;
         buildSidebar();
+      } else {
+        openFloor = key;
+        curFloor = key;
+        if (!isGallery) {
+          var elevs = getElevations(key);
+          if (elevs.length) {
+            openElev = elevs[0];
+            curElev = elevs[0];
+            var dirs = getDirsAtElev(key, curElev);
+            curDir = dirs.length ? dirs[0].d : '';
+          }
+        }
+        render();
       }
     };
     group.appendChild(header);
 
-    // Direction list
+    // Elevation → Direction hierarchy (for viewer tiers)
     if (!isGallery && data.views) {
-      const list = document.createElement('div');
-      list.className = 'dir-list' + (openFloor === key ? ' open' : '');
+      var elevList = document.createElement('div');
+      elevList.className = 'dir-list' + (openFloor === key ? ' open' : '');
 
-      data.views.forEach(function(v, i) {
-        const item = document.createElement('button');
-        item.className = 'dir-item' + (curFloor === key && curView === i ? ' active' : '');
+      var elevs = getElevations(key);
+      elevs.forEach(function(el) {
+        var elevGroup = document.createElement('div');
+        elevGroup.className = 'elev-group';
 
-        const indicator = document.createElement('span');
-        indicator.className = 'dir-indicator';
-        item.appendChild(indicator);
-        item.appendChild(document.createTextNode(v.d));
+        // Elevation header
+        var eh = document.createElement('button');
+        var isOpenElev = (curFloor === key && openElev === el);
+        eh.className = 'elev-header' + (isOpenElev ? ' active' : '');
+        var ft = document.createElement('span');
+        ft.className = 'elev-ft';
+        ft.textContent = el + ' ft';
+        eh.appendChild(ft);
+        eh.appendChild(makeSvgChevron('elev-chevron'));
 
-        item.onclick = function() {
-          curFloor = key;
-          curView = i;
-          curElev = null;
-          openFloor = key;
-          render();
+        eh.onclick = function() {
+          if (openElev === el && curFloor === key) {
+            openElev = null;
+            buildSidebar();
+          } else {
+            curFloor = key;
+            openFloor = key;
+            openElev = el;
+            curElev = el;
+            var dirs = getDirsAtElev(key, el);
+            if (dirs.length && !dirs.some(function(x){return x.d===curDir;})) {
+              curDir = dirs[0].d;
+            }
+            render();
+          }
         };
-        list.appendChild(item);
+        elevGroup.appendChild(eh);
+
+        // Direction sub-list
+        var dirList = document.createElement('div');
+        dirList.className = 'elev-dirs' + (isOpenElev ? ' open' : '');
+        var dirs = getDirsAtElev(key, el);
+        dirs.forEach(function(dirObj) {
+          var di = document.createElement('button');
+          var isActive = (curFloor === key && curElev === el && curDir === dirObj.d);
+          di.className = 'dir-item-nested' + (isActive ? ' active' : '');
+          var dot = document.createElement('span');
+          dot.className = 'dir-indicator';
+          di.appendChild(dot);
+          di.appendChild(document.createTextNode(dirObj.d));
+          di.onclick = function() {
+            curFloor = key;
+            openFloor = key;
+            curElev = el;
+            openElev = el;
+            curDir = dirObj.d;
+            render();
+          };
+          dirList.appendChild(di);
+        });
+        elevGroup.appendChild(dirList);
+
+        // Animate open
+        if (isOpenElev) {
+          requestAnimationFrame(function() {
+            dirList.style.maxHeight = dirList.scrollHeight + 'px';
+          });
+        }
+
+        elevList.appendChild(elevGroup);
       });
 
-      group.appendChild(list);
+      group.appendChild(elevList);
       if (openFloor === key) {
         requestAnimationFrame(function() {
-          list.style.maxHeight = list.scrollHeight + 'px';
+          elevList.style.maxHeight = elevList.scrollHeight + 'px';
         });
       }
     } else if (isGallery) {
-      const list = document.createElement('div');
+      var list = document.createElement('div');
       list.className = 'dir-list' + (openFloor === key ? ' open' : '');
 
-      const label = document.createElement('div');
+      var label = document.createElement('div');
       label.className = 'gallery-sidebar-label';
       label.textContent = data.items.length + ' images';
       list.appendChild(label);
 
-      const viewAll = document.createElement('button');
+      var viewAll = document.createElement('button');
       viewAll.className = 'dir-item' + (curFloor === key ? ' active' : '');
-      const vaIndicator = document.createElement('span');
+      var vaIndicator = document.createElement('span');
       vaIndicator.className = 'dir-indicator';
       viewAll.appendChild(vaIndicator);
       viewAll.appendChild(document.createTextNode('View All'));
@@ -818,8 +934,8 @@ function buildSidebar() {
 // ── MAIN RENDER ──
 function render() {
   buildSidebar();
-  const data = F[curFloor];
-  const isGallery = curFloor === 'site' || curFloor === 'separators';
+  var data = F[curFloor];
+  var isGallery = curFloor === 'site' || curFloor === 'separators';
 
   document.getElementById('viewerMode').style.display = isGallery ? 'none' : 'block';
   document.getElementById('galleryMode').style.display = isGallery ? 'block' : 'none';
@@ -827,69 +943,59 @@ function render() {
   if (isGallery) {
     renderGallery(data.items);
   } else {
-    renderViewer(data.views);
+    renderViewer();
   }
 }
 
-// ── VIEWER ──
-function renderViewer(views) {
-  const view = views[curView];
-  const elevs = Object.keys(view.e).map(Number).sort(function(a,b){return a-b;});
+// ── VIEWER (elevation-first) ──
+function renderViewer() {
+  // Find the image path for curElev + curDir
+  var dirs = getDirsAtElev(curFloor, curElev);
+  var match = dirs.find(function(x) { return x.d === curDir; });
+  if (!match && dirs.length) { curDir = dirs[0].d; match = dirs[0]; }
+  if (!match) return;
 
-  if (curElev === null) curElev = elevs[Math.floor(elevs.length / 2)];
-  if (!elevs.includes(curElev)) curElev = elevs[Math.floor(elevs.length / 2)];
-
-  const id = view.e[curElev];
-  const mainImg = document.getElementById('mainImg');
+  var mainImg = document.getElementById('mainImg');
   mainImg.classList.add('loading');
-  mainImg.src = imgUrl(id);
+  mainImg.src = imgUrl(match.path);
   mainImg.onload = function() { mainImg.classList.remove('loading'); };
-  mainImg.onclick = function() { openLbFromViewer(views); };
+  mainImg.onclick = function() { openLbFromViewer(); };
 
-  document.getElementById('viLabel').textContent = F[curFloor].label + ' \u00b7 ' + view.d;
-  document.getElementById('viDetail').textContent = curElev + ' ft elevation';
+  document.getElementById('viLabel').textContent = curDir + ' \u00b7 ' + curElev + ' ft';
+  document.getElementById('viDetail').textContent = F[curFloor].label;
 
-  // Slider
-  const slider = document.getElementById('elevSlider');
-  slider.min = 0;
-  slider.max = elevs.length - 1;
-  slider.value = elevs.indexOf(curElev);
-  slider.oninput = function() {
-    curElev = elevs[slider.value];
-    renderViewer(views);
-    buildSidebar();
-  };
-  document.getElementById('elevValue').textContent = curElev + ' ft';
-
-  // Thumbnails
-  const strip = document.getElementById('thumbStrip');
+  // Thumbnail strip: show all directions at this elevation
+  var strip = document.getElementById('thumbStrip');
   strip.textContent = '';
-  elevs.forEach(function(el) {
-    const t = document.createElement('div');
-    t.className = 'thumb-item' + (el === curElev ? ' active' : '');
-    const tImg = document.createElement('img');
-    tImg.src = thumbUrl(view.e[el]);
-    tImg.alt = el + 'ft';
+  dirs.forEach(function(dirObj) {
+    var t = document.createElement('div');
+    t.className = 'thumb-item' + (dirObj.d === curDir ? ' active' : '');
+    var tImg = document.createElement('img');
+    tImg.src = thumbUrl(dirObj.path);
+    tImg.alt = dirObj.d;
     tImg.loading = 'lazy';
     t.appendChild(tImg);
-    t.onclick = function() { curElev = el; renderViewer(views); buildSidebar(); };
+    t.onclick = function() {
+      curDir = dirObj.d;
+      render();
+    };
     strip.appendChild(t);
   });
 }
 
 // ── GALLERY ──
 function renderGallery(items) {
-  const grid = document.getElementById('galleryGrid');
+  var grid = document.getElementById('galleryGrid');
   grid.textContent = '';
   items.forEach(function(item, i) {
-    const div = document.createElement('div');
+    var div = document.createElement('div');
     div.className = 'gallery-item';
-    const gImg = document.createElement('img');
+    var gImg = document.createElement('img');
     gImg.src = thumbUrl(item.id);
     gImg.alt = item.n;
     gImg.loading = 'lazy';
     div.appendChild(gImg);
-    const label = document.createElement('div');
+    var label = document.createElement('div');
     label.className = 'gallery-item-label';
     label.textContent = item.n;
     div.appendChild(label);
@@ -908,15 +1014,11 @@ function openLb(images, idx) {
   document.body.style.overflow = 'hidden';
 }
 
-function openLbFromViewer(views) {
-  var list = [];
-  views.forEach(function(v) {
-    Object.keys(v.e).sort(function(a,b){return a-b;}).forEach(function(el) {
-      list.push({ id: v.e[el], label: v.d + ' \u00b7 ' + el + 'ft' });
-    });
-  });
-  var curId = views[curView].e[curElev];
-  var idx = list.findIndex(function(x) { return x.id === curId; });
+function openLbFromViewer() {
+  // Build list: all directions at current elevation, for lightbox navigation
+  var dirs = getDirsAtElev(curFloor, curElev);
+  var list = dirs.map(function(d) { return { id: d.path, label: d.d + ' \u00b7 ' + curElev + 'ft' }; });
+  var idx = dirs.findIndex(function(x) { return x.d === curDir; });
   openLb(list, idx >= 0 ? idx : 0);
 }
 
@@ -976,7 +1078,7 @@ sidebarOverlay.onclick = function() {
 
 // Close mobile sidebar on direction select
 document.addEventListener('click', function(e) {
-  if (e.target.closest('.dir-item') && window.innerWidth <= 900) {
+  if (e.target.closest('.dir-item-nested') && window.innerWidth <= 900) {
     setTimeout(function() {
       sidebar.classList.remove('mobile-open');
       sidebarOverlay.classList.remove('visible');
