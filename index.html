@@ -1124,7 +1124,7 @@ function openLb(images, idx) {
   lbImages = images; lbIdx = idx;
   var lb = document.getElementById('lightbox');
   document.getElementById('lbImg').src = imgUrl(lbImages[lbIdx].id);
-  document.getElementById('lbInfo').textContent = (lbIdx + 1) + ' / ' + lbImages.length;
+  document.getElementById('lbInfo').textContent = lbImages[lbIdx].label + '  \u2014  ' + (lbIdx + 1) + ' / ' + lbImages.length;
   lb.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
@@ -1153,7 +1153,7 @@ function lbNav(dir) {
   setTimeout(function() {
     lbImg.src = imgUrl(lbImages[lbIdx].id);
     lbImg.onload = function() { lbImg.style.opacity = '1'; };
-    document.getElementById('lbInfo').textContent = (lbIdx + 1) + ' / ' + lbImages.length;
+    document.getElementById('lbInfo').textContent = lbImages[lbIdx].label + '  \u2014  ' + (lbIdx + 1) + ' / ' + lbImages.length;
   }, 150);
 }
 
