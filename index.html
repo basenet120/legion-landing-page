@@ -174,10 +174,10 @@ nav.scrolled {
 /* DIRECTION LIST (collapsed by default) */
 .dir-list {
   max-height:0; overflow:hidden;
-  transition:max-height .5s var(--ease-out), opacity .3s;
+  transition:max-height .4s var(--ease-out), opacity .3s;
   opacity:0;
 }
-.dir-list.open { opacity:1; }
+.dir-list.open { opacity:1; overflow-y:auto; }
 .dir-item {
   display:flex; align-items:center; gap:10px;
   padding:10px 24px 10px 36px; cursor:pointer;
@@ -895,7 +895,8 @@ function buildSidebar() {
       group.appendChild(elevList);
       if (openFloor === key) {
         requestAnimationFrame(function() {
-          elevList.style.maxHeight = elevList.scrollHeight + 'px';
+          // Use a large max-height so nested elev-dirs can expand freely
+          elevList.style.maxHeight = '4000px';
         });
       }
     } else if (isGallery) {
