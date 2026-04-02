@@ -502,16 +502,65 @@ footer a:hover { color:#fff; }
 .sidebar-toggle {
   display:none; position:fixed;
   bottom:24px; left:24px; z-index:100;
-  width:48px; height:48px;
+  height:44px; padding:0 18px 0 14px;
   background:rgba(20,20,20,.95); backdrop-filter:blur(20px);
-  border:1px solid rgba(121,126,128,.15);
+  border:1px solid rgba(121,126,128,.2);
   color:#fff; cursor:pointer;
-  font-size:18px; border-radius:50%;
-  align-items:center; justify-content:center;
+  font-size:14px; border-radius:24px;
+  align-items:center; justify-content:center; gap:8px;
   transition:all .3s;
-  box-shadow:0 4px 20px rgba(0,0,0,.4);
+  box-shadow:0 4px 24px rgba(0,0,0,.5);
+  font-family:var(--font); letter-spacing:.5px;
 }
-.sidebar-toggle:hover { background:rgba(40,40,40,.95); border-color:rgba(121,126,128,.25); }
+.sidebar-toggle:hover { background:rgba(40,40,40,.95); border-color:rgba(121,126,128,.3); }
+.sidebar-toggle .toggle-label {
+  font-size:11px; letter-spacing:1.5px; text-transform:uppercase; font-weight:500;
+}
+
+/* NAV HINTS */
+.nav-hint {
+  display:none; padding:10px 16px;
+  background:rgba(121,126,128,.08); border-bottom:1px solid rgba(121,126,128,.08);
+  text-align:center; font-size:11px; letter-spacing:1px;
+  color:var(--text-light); cursor:pointer;
+  transition:opacity .4s; font-family:var(--font);
+}
+.nav-hint svg { vertical-align:-2px; margin-right:4px; opacity:.5; }
+.nav-hint-dismiss { opacity:.4; margin-left:8px; font-size:10px; }
+
+/* VIEWER ONBOARDING OVERLAY (first visit) */
+.viewer-onboard {
+  position:absolute; inset:0; z-index:20;
+  background:rgba(0,0,0,.55); backdrop-filter:blur(2px);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:16px; cursor:pointer;
+  animation:fadeIn .5s .3s both;
+}
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+.viewer-onboard.hidden { display:none; }
+.onboard-icon {
+  width:48px; height:48px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.2);
+  display:flex; align-items:center; justify-content:center;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { transform:scale(1); opacity:.7; } 50% { transform:scale(1.1); opacity:1; } }
+.onboard-text {
+  font-size:12px; letter-spacing:2px; text-transform:uppercase;
+  color:rgba(255,255,255,.7); text-align:center; line-height:1.6;
+  max-width:240px;
+}
+.onboard-sub {
+  font-size:10px; letter-spacing:1px; color:rgba(255,255,255,.35);
+  text-transform:uppercase;
+}
+
+/* SIDEBAR HELP TEXT */
+.sidebar-help {
+  padding:12px 24px 4px; font-size:10px; letter-spacing:.5px;
+  color:var(--text-light); line-height:1.5; opacity:.6;
+}
 
 /* SCROLLBAR */
 ::-webkit-scrollbar { width:6px; }
@@ -586,6 +635,7 @@ footer a:hover { color:#fff; }
       <div class="sidebar-header">
         <div class="sidebar-label">Perspectives</div>
       </div>
+      <div class="sidebar-help">Choose an elevation to see available views from that height.</div>
       <div id="sidebarNav"></div>
     </aside>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
@@ -601,6 +651,15 @@ footer a:hover { color:#fff; }
                 <div class="vi-detail" id="viDetail"></div>
               </div>
             </div>
+            <div class="viewer-onboard" id="viewerOnboard">
+              <div class="onboard-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </div>
+              <div class="onboard-text" id="onboardText">
+                Select an elevation, then choose a direction to explore panoramic views
+              </div>
+              <div class="onboard-sub" id="onboardSub">Click image to open fullscreen</div>
+            </div>
           </div>
           <div class="thumb-strip" id="thumbStrip"></div>
         </div>
@@ -613,9 +672,10 @@ footer a:hover { color:#fff; }
   </div>
 
   <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <path d="M3 12h18M3 6h18M3 18h18"/>
     </svg>
+    <span class="toggle-label">Views</span>
   </button>
 </section>
 
@@ -1140,6 +1200,28 @@ document.addEventListener('click', function(e) {
     }, 200);
   }
 });
+
+// ── ONBOARDING: dismiss on any interaction ──
+var onboard = document.getElementById('viewerOnboard');
+function dismissOnboard() {
+  if (onboard && !onboard.classList.contains('hidden')) {
+    onboard.classList.add('hidden');
+  }
+}
+if (onboard) onboard.onclick = dismissOnboard;
+// Auto-dismiss on first direction click, thumbnail click, or sidebar toggle
+document.addEventListener('click', function(e) {
+  if (e.target.closest('.dir-item-nested') || e.target.closest('.thumb-item') || e.target.closest('.elev-header')) {
+    dismissOnboard();
+  }
+});
+// Adapt text for mobile
+if (window.innerWidth <= 900) {
+  var oText = document.getElementById('onboardText');
+  var oSub = document.getElementById('onboardSub');
+  if (oText) oText.textContent = 'Tap "Views" below to browse elevations and directions';
+  if (oSub) oSub.textContent = 'Tap image to open fullscreen';
+}
 
 // ── BUILDING FEATURED IMAGE ──
 document.getElementById('buildingFeatured').src = imgUrl(F.site.items[2].id);
