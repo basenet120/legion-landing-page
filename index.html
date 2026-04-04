@@ -817,10 +817,16 @@ function getDirsAtElev(key, elev) {
   return out;
 }
 
+// ── HELPERS ──
+function defaultDir(dirs) {
+  var sw = dirs.find(function(x){ return x.d === 'SW'; });
+  return sw ? sw.d : (dirs.length ? dirs[0].d : '');
+}
+
 // ── STATE ──
 let curFloor = 'crown';
 let curElev = 500;
-let curDir = 'N';
+let curDir = 'SW';
 let lbImages = [];
 let lbIdx = 0;
 let openFloor = 'crown';
@@ -905,7 +911,7 @@ function buildSidebar() {
             openElev = elevs[0];
             curElev = elevs[0];
             var dirs = getDirsAtElev(key, curElev);
-            curDir = dirs.length ? dirs[0].d : '';
+            curDir = defaultDir(dirs);
           }
         }
         render();
@@ -944,7 +950,7 @@ function buildSidebar() {
             curElev = el;
             var dirs = getDirsAtElev(key, el);
             if (dirs.length && !dirs.some(function(x){return x.d===curDir;})) {
-              curDir = dirs[0].d;
+              curDir = defaultDir(dirs);
             }
             render();
           }
@@ -1057,7 +1063,7 @@ function renderViewer() {
   // Find the image path for curElev + curDir
   var dirs = getDirsAtElev(curFloor, curElev);
   var match = dirs.find(function(x) { return x.d === curDir; });
-  if (!match && dirs.length) { curDir = dirs[0].d; match = dirs[0]; }
+  if (!match && dirs.length) { curDir = defaultDir(dirs); match = dirs.find(function(x){return x.d===curDir;}) || dirs[0]; }
   if (!match) return;
 
   var mainImg = document.getElementById('mainImg');
