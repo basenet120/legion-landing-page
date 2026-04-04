@@ -444,58 +444,6 @@ nav.scrolled {
 }
 .building-img img { width:100%; height:100%; object-fit:cover; }
 
-/* CONTACT */
-.contact {
-  padding:100px 48px; background:var(--bg-dark); text-align:center;
-  border-top:1px solid rgba(121,126,128,.06);
-}
-.contact-inner { max-width:560px; margin:0 auto; }
-.contact h2 {
-  font-family:var(--font); font-size:clamp(28px,3.5vw,40px);
-  font-weight:400; margin-bottom:24px; letter-spacing:.5px;
-}
-.contact p {
-  font-size:14px; color:var(--text-light); line-height:1.7;
-  margin-bottom:16px;
-}
-.contact a { color:rgba(255,255,255,.7); text-decoration:none; transition:color .3s; }
-.contact a:hover { color:#fff; }
-.contact-address { margin-bottom:32px; }
-.contact-form { width:100%; text-align:left; }
-.form-row { display:flex; gap:12px; }
-.contact-form input,
-.contact-form textarea {
-  width:100%; padding:14px 16px; margin-bottom:12px;
-  background:rgba(255,255,255,.04); border:1px solid rgba(121,126,128,.2);
-  color:#fff; font-family:var(--font); font-size:13px;
-  letter-spacing:.5px; outline:none;
-  transition:border-color .3s var(--ease), background .3s;
-}
-.contact-form input::placeholder,
-.contact-form textarea::placeholder {
-  color:rgba(255,255,255,.3); letter-spacing:1px; font-size:12px;
-}
-.contact-form input:focus,
-.contact-form textarea:focus {
-  border-color:rgba(255,255,255,.35); background:rgba(255,255,255,.06);
-}
-.contact-form textarea { resize:vertical; min-height:100px; }
-.contact-cta {
-  display:inline-block; margin-top:8px; padding:14px 44px;
-  border:1px solid rgba(255,255,255,.2); color:rgba(255,255,255,.8);
-  font-size:11px; letter-spacing:3px; text-transform:uppercase;
-  text-decoration:none; transition:all .5s var(--ease);
-  cursor:pointer; background:transparent; font-family:var(--font);
-  width:100%;
-}
-.contact-cta:hover { background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.35); }
-.form-success {
-  display:none; margin-top:16px; padding:14px 20px;
-  border:1px solid rgba(255,255,255,.1);
-  font-size:12px; letter-spacing:1px; color:rgba(255,255,255,.6);
-  text-align:center;
-}
-
 /* FOOTER */
 footer {
   padding:28px 48px; background:rgba(20,20,20,.8);
@@ -598,7 +546,6 @@ footer a:hover { color:#fff; }
   .explorer-layout { padding-top:var(--header-height); }
   .building-inner { grid-template-columns:1fr; gap:40px; }
   .building { padding:64px 24px; }
-  .contact { padding:64px 24px; }
   .gallery-grid { padding:16px; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); }
   .viewer-container { padding:16px; }
 }
@@ -606,8 +553,6 @@ footer a:hover { color:#fff; }
   .nav-links { display:none; }
   .thumb-item { width:60px; height:42px; }
   .gallery-grid { grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); }
-  .form-row { flex-direction:column; gap:0; }
-  .contact-inner { max-width:100%; }
 }
 /* PASSWORD GATE */
 .pw-gate {
@@ -674,9 +619,7 @@ footer a:hover { color:#fff; }
   <ul class="nav-links">
     <li><a onclick="smoothScroll('#explorer')">Views</a></li>
     <li><a onclick="smoothScroll('#building')">Building</a></li>
-    <li><a onclick="smoothScroll('#contact')">Contact</a></li>
   </ul>
-  <a onclick="smoothScroll('#contact')" class="nav-cta">Inquire</a>
 </nav>
 
 <section class="hero" id="hero">
@@ -755,7 +698,6 @@ footer a:hover { color:#fff; }
   <div class="building-inner">
     <div class="building-text">
       <h2>201 East 84th Street</h2>
-      <p>Contemporary architecture on Manhattan's most coveted Upper East Side address. LEGION combines timeless elegance with modern luxury, offering unparalleled views and sophisticated living spaces at every elevation.</p>
       <div class="building-stats">
         <div class="stat"><h3>Location</h3><p>Upper East Side, Manhattan</p></div>
         <div class="stat"><h3>Floors</h3><p>6 through Crown (31+)</p></div>
@@ -769,34 +711,9 @@ footer a:hover { color:#fff; }
   </div>
 </section>
 
-<section class="contact" id="contact">
-  <div class="contact-inner">
-    <h2>Get in Touch</h2>
-    <p>Discover the ultimate in luxury living at LEGION.</p>
-    <p class="contact-address">
-      75 Rockefeller Plaza, Floor 17<br>
-      New York, NY 10019<br>
-      <a href="tel:+12123171700">(212) 317-1700</a>
-    </p>
-    <form id="contactForm" class="contact-form" onsubmit="return handleContact(event)">
-      <div class="form-row">
-        <input type="text" id="cf-name" placeholder="Name *" required>
-        <input type="email" id="cf-email" placeholder="Email *" required>
-      </div>
-      <div class="form-row">
-        <input type="tel" id="cf-phone" placeholder="Phone">
-        <input type="text" id="cf-company" placeholder="Company">
-      </div>
-      <input type="text" id="cf-subject" placeholder="Subject *" required>
-      <textarea id="cf-body" rows="5" placeholder="Message *" required></textarea>
-      <button type="submit" class="contact-cta" id="cf-submit">Submit Inquiry</button>
-      <div class="form-success" id="formSuccess">Thank you for your inquiry. We'll be in touch shortly.</div>
-    </form>
-  </div>
-</section>
 
 <footer>
-  &copy; 2025 LEGION. All rights reserved. &nbsp;|&nbsp; <a href="#contact">Contact</a>
+  &copy; 2025 LEGION. All rights reserved.
 </footer>
 
 <script>
@@ -1262,36 +1179,6 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// ── CONTACT FORM ──
-function handleContact(e) {
-  e.preventDefault();
-  var name = document.getElementById('cf-name').value;
-  var email = document.getElementById('cf-email').value;
-  var phone = document.getElementById('cf-phone').value;
-  var company = document.getElementById('cf-company').value;
-  var subject = document.getElementById('cf-subject').value;
-  var body = document.getElementById('cf-body').value;
-
-  var lines = [];
-  lines.push(body);
-  lines.push('');
-  lines.push('---');
-  lines.push('From: ' + name + ' (' + email + ')');
-  if (phone) lines.push('Phone: ' + phone);
-  if (company) lines.push('Company: ' + company);
-
-  var mailto = 'mailto:szalka@legionig.com'
-    + '?subject=' + encodeURIComponent(subject)
-    + '&body=' + encodeURIComponent(lines.join('\n'));
-
-  window.open(mailto, '_blank');
-
-  // Show success state
-  document.getElementById('cf-submit').textContent = 'Email Client Opened';
-  document.getElementById('cf-submit').style.opacity = '.5';
-  document.getElementById('formSuccess').style.display = 'block';
-  return false;
-}
 
 // ── ONBOARDING: dismiss on any interaction ──
 var onboard = document.getElementById('viewerOnboard');
